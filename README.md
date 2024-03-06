@@ -5,6 +5,6 @@
 
 Spatial RNAseq analysis using 10X Visium.
 
-UMAP of HCLO snRNAseq      | Pseudotime analysis using Monocle3    
+Spatial Feature plot for Sox9 and Klf6      | UMAP of spatial RNAseq and corresponding locations 
 :-------------------------:|:-------------------------:
 ![](https://github.com/hasanwraeth/Spatial_RNAseq/blob/main/Rplot01.jpeg) | ![](https://github.com/hasanwraeth/Spatial_RNAseq/blob/main/Rplot02.jpeg)
