@@ -7,4 +7,4 @@ Spatial RNAseq analysis using 10X Visium.
 
 UMAP of HCLO snRNAseq      | Pseudotime analysis using Monocle3    
 :-------------------------:|:-------------------------:
-![](https://github.com/hasanwraeth/Spatial_RNAseq/blob/main/Rplot1.jpeg)  |  ![](https://github.com/hasanwraeth/Spatial_RNAseq/blob/main/Rplot2.jpeg)
+![](https://github.com/hasanwraeth/Spatial_RNAseq/blob/main/Rplot01.jpeg) | ![](https://github.com/hasanwraeth/Spatial_RNAseq/blob/main/Rplot02.jpeg)
