@@ -9,7 +9,7 @@
 
 ### Install
 
-Pre-processing is done using [Space Ranger](https://www.10xgenomics.com/support/software/space-ranger/latest/tutorials/count-ffpe-tutorial))
+Pre-processing is done using [Space Ranger](https://www.10xgenomics.com/support/software/space-ranger/latest/tutorials/count-ffpe-tutorial)
 
 Spatial Feature plot for Sox9 and Klf6      | UMAP of spatial RNAseq and corresponding locations 
 :-------------------------:|:-------------------------:
