@@ -25,6 +25,6 @@ Spatial Feature plot for Sox9 and Klf6      | UMAP of spatial RNAseq and corresp
 Pre-processing is done using [Xenium Ranger](https://www.10xgenomics.com/support/software/xenium-ranger/latest/resources/XR-command-line-arguments) or [Xenium Onboard Analysis software](https://www.10xgenomics.com/support/software/xenium-onboard-analysis/latest/getting-started).
 
 ### Results
-Spatial Feature plot for Sox9 and Klf6      | UMAP of spatial RNAseq and corresponding locations 
+Xenium image with Protein stains      | Xenium feature plot with sequenced RNA
 :-------------------------:|:-------------------------:
-![](https://github.com/hasanwraeth/Spatial_RNAseq/blob/main/Rplot01.jpe) | ![](https://github.com/hasanwraeth/Spatial_RNAseq/blob/main/Rplot02.jpe)
+![](https://github.com/hasanwraeth/Spatial_RNAseq/blob/main/Rplot03.jpeg) | ![](https://github.com/hasanwraeth/Spatial_RNAseq/blob/main/Rplot.jpeg)
