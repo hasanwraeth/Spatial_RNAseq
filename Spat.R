@@ -209,47 +209,47 @@ p1 | p2
 #10X Xenium------------------
 path <- "./Xenium_V1_FF_Mouse_Brain_Coronal_Subset_CTX_HP_outs/"
 # Load the Xenium data
-xenium.obj <- LoadXenium(path, fov = "fov")
+xenium.obj1 <- LoadXenium(path, fov = "fov")
 # remove cells with 0 counts
-xenium.obj <- subset(xenium.obj, subset = nCount_Xenium > 0)
+xenium.obj1 <- subset(xenium.obj1, subset = nCount_Xenium > 0)
 
-VlnPlot(xenium.obj, features = c("nFeature_Xenium", "nCount_Xenium"), ncol = 2, pt.size = 0)
+VlnPlot(xenium.obj1, features = c("nFeature_Xenium", "nCount_Xenium"), ncol = 2, pt.size = 0)
 
-ImageDimPlot(xenium.obj, fov = "fov", molecules = c("Gad1", "Sst", "Pvalb", "Gfap"), nmols = 20000)
+ImageDimPlot(xenium.obj1, fov = "fov", molecules = c("Gad1", "Sst", "Pvalb", "Gfap"), nmols = 20000)
 
-ImageFeaturePlot(xenium.obj, features = c("Cux2", "Rorb", "Bcl11b", "Foxp2"), max.cutoff = c(25,
+ImageFeaturePlot(xenium.obj1, features = c("Cux2", "Rorb", "Bcl11b", "Foxp2"), max.cutoff = c(25,
                                                                                              35, 12, 10), size = 0.75, cols = c("white", "red"))
-cropped.coords <- Crop(xenium.obj[["fov"]], x = c(1200, 2900), y = c(3750, 4550), coords = "plot")
-xenium.obj[["zoom"]] <- cropped.coords
+cropped.coords <- Crop(xenium.obj1[["fov"]], x = c(1200, 2900), y = c(3750, 4550), coords = "plot")
+xenium.obj1[["zoom"]] <- cropped.coords
 # visualize cropped area with cell segmentations & selected molecules
-DefaultBoundary(xenium.obj[["zoom"]]) <- "segmentation"
-ImageDimPlot(xenium.obj, fov = "zoom", axes = TRUE, border.color = "white", border.size = 0.1, cols = "polychrome",
+DefaultBoundary(xenium.obj1[["zoom"]]) <- "segmentation"
+ImageDimPlot(xenium.obj1, fov = "zoom", axes = TRUE, border.color = "white", border.size = 0.1, cols = "polychrome",
              coord.fixed = FALSE, molecules = c("Gad1", "Sst", "Npy2r", "Pvalb", "Nrn1"), nmols = 10000)
 
-xenium.obj <- SCTransform(xenium.obj, assay = "Xenium")
-xenium.obj <- RunPCA(xenium.obj, npcs = 30, features = rownames(xenium.obj))
-xenium.obj <- RunUMAP(xenium.obj, dims = 1:30)
-xenium.obj <- FindNeighbors(xenium.obj, reduction = "pca", dims = 1:30)
-xenium.obj <- FindClusters(xenium.obj, resolution = 0.3)
+xenium.obj1 <- SCTransform(xenium.obj1, assay = "Xenium")
+xenium.obj1 <- RunPCA(xenium.obj1, npcs = 30, features = rownames(xenium.obj1))
+xenium.obj1 <- RunUMAP(xenium.obj1, dims = 1:30)
+xenium.obj1 <- FindNeighbors(xenium.obj1, reduction = "pca", dims = 1:30)
+xenium.obj1 <- FindClusters(xenium.obj1, resolution = 0.3)
 
-DimPlot(xenium.obj)
-FeaturePlot(xenium.obj, features = c("Foxp2", "Gfap"))
-ImageDimPlot(xenium.obj, cols = "polychrome", size = 0.75)
+DimPlot(xenium.obj1)
+FeaturePlot(xenium.obj1, features = c("Foxp2", "Gfap"))
+ImageDimPlot(xenium.obj1, cols = "polychrome", size = 0.75)
 
-p1 <- ImageFeaturePlot(xenium.obj, features = "Slc17a7", axes = TRUE, max.cutoff = "q90")
+p1 <- ImageFeaturePlot(xenium.obj1, features = "Slc17a7", axes = TRUE, max.cutoff = "q90")
 p1
 
-crop <- Crop(xenium.obj[["fov"]], x = c(600, 2100), y = c(900, 4700))
-xenium.obj[["crop"]] <- crop
-p2 <- ImageFeaturePlot(xenium.obj, fov = "crop", features = "Slc17a7", size = 1, axes = TRUE, max.cutoff = "q90")
+crop <- Crop(xenium.obj1[["fov"]], x = c(600, 2100), y = c(900, 4700))
+xenium.obj1[["crop"]] <- crop
+p2 <- ImageFeaturePlot(xenium.obj1, fov = "crop", features = "Slc17a7", size = 1, axes = TRUE, max.cutoff = "q90")
 p2
 
 devtools::install_github("dmcable/spacexr", build_vignettes = FALSE)
 
 library(spacexr)
 
-query.counts <- GetAssayData(xenium.obj, assay = "Xenium", slot = "counts")[, Cells(xenium.obj[["crop"]])]
-coords <- GetTissueCoordinates(xenium.obj[["crop"]], which = "centroids")
+query.counts <- GetAssayData(xenium.obj1, assay = "Xenium", slot = "counts")[, Cells(xenium.obj1[["crop"]])]
+coords <- GetTissueCoordinates(xenium.obj1[["crop"]], which = "centroids")
 rownames(coords) <- coords$cell
 coords$cell <- NULL
 query <- SpatialRNA(coords, query.counts, colSums(query.counts))
@@ -278,21 +278,55 @@ RCTD <- run.RCTD(RCTD, doublet_mode = "doublet")
 annotations.df <- RCTD@results$results_df
 annotations <- annotations.df$first_type
 names(annotations) <- rownames(annotations.df)
-xenium.obj$predicted.celltype <- annotations
-keep.cells <- Cells(xenium.obj)[!is.na(xenium.obj$predicted.celltype)]
-xenium.obj <- subset(xenium.obj, cells = keep.cells)
+xenium.obj1$predicted.celltype <- annotations
+keep.cells <- Cells(xenium.obj1)[!is.na(xenium.obj1$predicted.celltype)]
+xenium.obj1 <- subset(xenium.obj1, cells = keep.cells)
 
-xenium.obj <- BuildNicheAssay(object = xenium.obj, fov = "crop", group.by = "predicted.celltype",
+xenium.obj1 <- BuildNicheAssay(object = xenium.obj1, fov = "crop", group.by = "predicted.celltype",
                               niches.k = 5, neighbors.k = 30)
 
-celltype.plot <- ImageDimPlot(xenium.obj, group.by = "predicted.celltype", size = 1.5, cols = "polychrome",
+celltype.plot <- ImageDimPlot(xenium.obj1, group.by = "predicted.celltype", size = 1.5, cols = "polychrome",
                               dark.background = F) + ggtitle("Cell type")
-niche.plot <- ImageDimPlot(xenium.obj, group.by = "niches", size = 1.5, dark.background = F) + ggtitle("Niches") +
+niche.plot <- ImageDimPlot(xenium.obj1, group.by = "niches", size = 1.5, dark.background = F) + ggtitle("Niches") +
   scale_fill_manual(values = c("#442288", "#6CA2EA", "#B5D33D", "#FED23F", "#EB7D5B"))
 celltype.plot | niche.plot
 
-table(xenium.obj$predicted.celltype, xenium.obj$niches)
+table(xenium.obj1$predicted.celltype, xenium.obj1$niches)
 
 
 #Save------------------
 saveRDS(slide.seq,'slideseq.rds')
+
+
+#Extract matrix from .h5----------------------
+my_counts_list <- lapply(path, function(path) {
+  # Each cell gets a barcode nucleotide sequence.
+  # e.g. "AAACCTGAGACCGGAT-1"
+  my_barcodes <- as.character(h5read(path, "matrix/barcodes"))
+  # We'll assume that the name of the folder containing the .h5 file
+  # is the name of the channel (sample).
+  my_channel <- basename(dirname(path))
+  # Prepend the sample name to the barcodes, so we can safely
+  # merge multiple samples into a single matrix.
+  my_barcodes <- sprintf("%s|%s", my_channel, my_barcodes)
+  # Read the data into a dgCMatrix (sparse matrix).
+  h5 <- h5read(path, "matrix")
+  counts <- sparseMatrix(
+    dims = h5$shape,
+    i = as.numeric(h5$indices),
+    p = as.numeric(h5$indptr),
+    x = as.numeric(h5$data),
+    index1 = FALSE
+  )
+  colnames(counts) <- my_barcodes
+  rownames(counts) <- as.data.frame(h5[["features"]])$id
+  return(counts)
+})
+
+counts <- do.call(cbind, my_counts_list)
+genes <- h5read(path[1], "matrix/features")
+barcodes <- h5read(path[1], "matrix/barcodes")
+
+writeMM(counts, file=paste0('matrix.mtx'))
+write.table(genes, file = "genes.tsv", row.names=FALSE, sep="\t")
+write.table(barcodes, file = "barcodes.tsv", row.names=FALSE, sep="\t")
